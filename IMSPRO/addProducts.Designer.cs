@@ -50,14 +50,14 @@
             // 
             // txt_barcode
             // 
-            this.txt_barcode.Location = new System.Drawing.Point(64, 104);
+            this.txt_barcode.Location = new System.Drawing.Point(64, 103);
             this.txt_barcode.Name = "txt_barcode";
             this.txt_barcode.Size = new System.Drawing.Size(196, 22);
             this.txt_barcode.TabIndex = 1;
             // 
             // txt_productName
             // 
-            this.txt_productName.Location = new System.Drawing.Point(277, 104);
+            this.txt_productName.Location = new System.Drawing.Point(277, 103);
             this.txt_productName.Name = "txt_productName";
             this.txt_productName.Size = new System.Drawing.Size(363, 22);
             this.txt_productName.TabIndex = 2;
@@ -85,6 +85,7 @@
             this.btn_add.TabIndex = 5;
             this.btn_add.Text = "Add";
             this.btn_add.UseVisualStyleBackColor = true;
+            this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
             // 
             // btn_delete
             // 
@@ -152,7 +153,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(64, 133);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1049, 308);
+            this.dataGridView1.Size = new System.Drawing.Size(1049, 452);
             this.dataGridView1.TabIndex = 12;
             // 
             // Barcode
@@ -185,7 +186,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1147, 519);
+            this.ClientSize = new System.Drawing.Size(1157, 609);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
