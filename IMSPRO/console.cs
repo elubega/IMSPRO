@@ -47,5 +47,17 @@ namespace IMSPRO
             userWindow.MdiParent = this;
             userWindow.Show();
         }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void branchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            branchManager brchWindow = new branchManager(userIDx);
+            brchWindow.MdiParent = this;
+            brchWindow.Show();
+        }
     }
 }

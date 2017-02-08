@@ -93,6 +93,16 @@ namespace IMSPRO.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap lngtep {
+            get {
+                object obj = ResourceManager.GetObject("lngtep", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap self_1_icon {
             get {
                 object obj = ResourceManager.GetObject("self-1-icon", resourceCulture);
