@@ -13,10 +13,12 @@ namespace IMSPRO
     public partial class console : Form
     {
         private int childFormNumber = 0;
-
-        public console()
+        public string  userIDx;
+        public console(String loginAs, String userID)
         {
             InitializeComponent();
+            lbl_login.Text = loginAs.ToUpper();
+            userIDx = userID;
         }
 
         private void console_FormClosing(object sender, FormClosingEventArgs e)
@@ -26,9 +28,24 @@ namespace IMSPRO
 
         private void newProductToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            addProducts nuPdtWind = new addProducts();
+            string userIDd = userIDx;
+            addProducts nuPdtWind = new addProducts(lbl_login.Text, userIDx);
             nuPdtWind.MdiParent = this;
             nuPdtWind.Show();
+        }
+
+        private void mnu_unitMeasures_Click(object sender, EventArgs e)
+        {
+            unitMeasures unitWindow = new unitMeasures();
+            unitWindow.MdiParent = this;
+            unitWindow.Show();
+        }
+
+        private void mnu_users_Click(object sender, EventArgs e)
+        {
+            userManagement userWindow = new userManagement();
+            userWindow.MdiParent = this;
+            userWindow.Show();
         }
     }
 }

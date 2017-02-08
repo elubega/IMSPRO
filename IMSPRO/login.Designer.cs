@@ -36,9 +36,9 @@
             this.btn_cancel = new System.Windows.Forms.Button();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.cbm_level = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -50,6 +50,7 @@
             this.txt_username.Name = "txt_username";
             this.txt_username.Size = new System.Drawing.Size(234, 22);
             this.txt_username.TabIndex = 0;
+            this.txt_username.Text = "admin";
             // 
             // label1
             // 
@@ -76,6 +77,7 @@
             this.txt_password.PasswordChar = '*';
             this.txt_password.Size = new System.Drawing.Size(234, 22);
             this.txt_password.TabIndex = 3;
+            this.txt_password.Text = "admin";
             // 
             // btn_login
             // 
@@ -95,6 +97,7 @@
             this.btn_cancel.TabIndex = 5;
             this.btn_cancel.Text = "Cancel";
             this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
             // 
             // linkLabel1
             // 
@@ -108,7 +111,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.cbm_level);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.txt_password);
             this.groupBox1.Controls.Add(this.txt_username);
@@ -120,15 +123,17 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             // 
-            // label3
+            // cbm_level
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial Rounded MT Bold", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(91, 35);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(482, 34);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Inventory Management Systems";
+            this.cbm_level.FormattingEnabled = true;
+            this.cbm_level.Items.AddRange(new object[] {
+            "Branch",
+            "Store",
+            "Manager"});
+            this.cbm_level.Location = new System.Drawing.Point(341, 121);
+            this.cbm_level.Name = "cbm_level";
+            this.cbm_level.Size = new System.Drawing.Size(234, 24);
+            this.cbm_level.TabIndex = 5;
             // 
             // label4
             // 
@@ -139,17 +144,15 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Level:";
             // 
-            // comboBox1
+            // label3
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Branch",
-            "Store",
-            "Manager"});
-            this.comboBox1.Location = new System.Drawing.Point(341, 121);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(234, 24);
-            this.comboBox1.TabIndex = 5;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial Rounded MT Bold", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(91, 35);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(482, 34);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Inventory Management Systems";
             // 
             // pictureBox1
             // 
@@ -199,7 +202,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbm_level;
         private System.Windows.Forms.Label label4;
     }
 }

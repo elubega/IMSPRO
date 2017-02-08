@@ -39,13 +39,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Barcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pdtName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.unitMeasure = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateOrdered = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.lstProducts = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.lstProducts)).BeginInit();
             this.SuspendLayout();
             // 
             // txt_barcode
@@ -141,53 +136,23 @@
             this.label4.TabIndex = 11;
             this.label4.Text = "Unit Measure";
             // 
-            // dataGridView1
+            // lstProducts
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Barcode,
-            this.pdtName,
-            this.qty,
-            this.unitMeasure,
-            this.dateOrdered});
-            this.dataGridView1.Location = new System.Drawing.Point(64, 133);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1049, 452);
-            this.dataGridView1.TabIndex = 12;
-            // 
-            // Barcode
-            // 
-            this.Barcode.HeaderText = "Barcode";
-            this.Barcode.Name = "Barcode";
-            // 
-            // pdtName
-            // 
-            this.pdtName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.pdtName.HeaderText = "Product Name";
-            this.pdtName.Name = "pdtName";
-            // 
-            // qty
-            // 
-            this.qty.HeaderText = "Quantity";
-            this.qty.Name = "qty";
-            // 
-            // unitMeasure
-            // 
-            this.unitMeasure.HeaderText = "Unit Measure";
-            this.unitMeasure.Name = "unitMeasure";
-            // 
-            // dateOrdered
-            // 
-            this.dateOrdered.HeaderText = "Date Ordered";
-            this.dateOrdered.Name = "dateOrdered";
+            this.lstProducts.AllowUserToAddRows = false;
+            this.lstProducts.AllowUserToDeleteRows = false;
+            this.lstProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.lstProducts.Location = new System.Drawing.Point(64, 133);
+            this.lstProducts.Name = "lstProducts";
+            this.lstProducts.RowTemplate.Height = 24;
+            this.lstProducts.Size = new System.Drawing.Size(1049, 452);
+            this.lstProducts.TabIndex = 12;
             // 
             // addProducts
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1157, 609);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.lstProducts);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -204,7 +169,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add New Product";
             this.TopMost = true;
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lstProducts)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -223,11 +188,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Barcode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn pdtName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn qty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn unitMeasure;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dateOrdered;
+        private System.Windows.Forms.DataGridView lstProducts;
     }
 }
