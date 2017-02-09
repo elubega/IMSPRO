@@ -87,6 +87,12 @@
     <Compile Include="console.Designer.cs">
       <DependentUpon>console.cs</DependentUpon>
     </Compile>
+    <Compile Include="editeUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="editeUser.Designer.cs">
+      <DependentUpon>editeUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +127,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="console.resx">
       <DependentUpon>console.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="editeUser.resx">
+      <DependentUpon>editeUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.cs</DependentUpon>
