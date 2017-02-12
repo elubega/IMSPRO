@@ -82,22 +82,54 @@ namespace IMSPRO
             }
         }
         
-        private void loadUsers()
+        public void loadUsers()
         {
             try
             {
                 SetConnection();
                 sql_con.Open();
                 sql_cmd = sql_con.CreateCommand();
-                string CommandText = "select userName AS 'Username', firstName AS 'First Name', lastName AS 'Last Name', phone AS 'Phone No.:', level As 'Level', dateCreated As 'Account Open' from users";
-                DB = new SQLiteDataAdapter(CommandText, sql_con);
-                DS.Reset();
-                DB.Fill(DS);
-                DT = DS.Tables[0];
-                grdUserMgt.DataSource = DT;
-                sql_con.Close();
+                string CommandText = "select userID, userName, firstName, lastName, phone, level, dateCreated from users";
+                SQLiteDataAdapter DB = new SQLiteDataAdapter(CommandText, sql_con);
+                
+                DataTable userDataTable = new DataTable();
+                DB.Fill(userDataTable);
+                grdUserMgt.Rows.Clear();
+                grdUserMgt.ColumnCount = 7;
+                grdUserMgt.ColumnHeadersVisible = true;
+
+                //DataGridViewCellStyle columnHeaderStyle = new DataGridViewCellStyle();
+
+                //columnHeaderStyle.BackColor = Color.Beige;
+                //columnHeaderStyle.Font = new Font("Verdana", 10, FontStyle.Bold);
+               //grdUserMgt.ColumnHeadersDefaultCellStyle = columnHeaderStyle;
+
+                grdUserMgt.Columns[0].Name = "ID";
+                grdUserMgt.Columns[1].Name = "Username";
+                grdUserMgt.Columns[2].Name = "First Name";
+                grdUserMgt.Columns[3].Name = "Last Name";
+                grdUserMgt.Columns[4].Name = "Phone No.:";
+                grdUserMgt.Columns[5].Name = "Level";
+                grdUserMgt.Columns[6].Name = "Account Open";
 
                 this.grdUserMgt.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                grdUserMgt.Columns[0].Visible = false;
+                foreach (DataRow item in userDataTable.Rows)
+                {
+                    
+                    int n = grdUserMgt.Rows.Add();
+                    grdUserMgt.Rows[n].Cells[0].Value = item["userID"].ToString();
+                    grdUserMgt.Rows[n].Cells[1].Value = item["userName"].ToString();
+                    grdUserMgt.Rows[n].Cells[2].Value = item["firstName"].ToString();
+                    grdUserMgt.Rows[n].Cells[3].Value = item["lastName"].ToString();
+                    grdUserMgt.Rows[n].Cells[4].Value = item["phone"].ToString();
+                    grdUserMgt.Rows[n].Cells[5].Value = item["level"].ToString();
+                    grdUserMgt.Rows[n].Cells[6].Value = Convert.ToDateTime( item["dateCreated"].ToString()).ToString("d");
+                }
+                
+                sql_con.Close();
+
+                
             }
             catch(Exception e)
             {
@@ -112,9 +144,39 @@ namespace IMSPRO
             clearEntryForm();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void grdUserMgt_KeyUp(object sender, KeyEventArgs e)
         {
-            editeUser editUserFrame = new editeUser();
+            if (e.KeyCode == Keys.Delete)
+            {
+                Console.Beep();
+                SetConnection();
+                sql_con.Open();
+                string query = "Delete from users where userID = @ID";
+                SQLiteCommand comm = new SQLiteCommand(query, sql_con);
+                comm.Parameters.AddWithValue("@ID", grdUserMgt.SelectedRows[0].Cells[0].Value.ToString());
+                DialogResult result = MessageBox.Show("Do you really want to delete the User \"" + grdUserMgt.SelectedRows[0].Cells[3].Value.ToString() + "\"?", "Confirm User deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+
+                    int qSuccess = comm.ExecuteNonQuery();
+                    MessageBox.Show("User Deleted Sucessfully", "User Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    loadUsers();
+                    clearEntryForm();
+                }
+                if (result == DialogResult.No)
+                {
+                    clearEntryForm();
+                }
+
+                sql_con.Close();
+            }
+        }
+
+        private void grdUserMgt_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int userID = Int32.Parse(grdUserMgt.SelectedRows[0].Cells[0].Value.ToString());
+            editeUser editUserFrame = new editeUser(userID, this);
             editUserFrame.MdiParent = this.ParentForm;
             editUserFrame.Show();
         }

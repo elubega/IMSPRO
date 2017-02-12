@@ -45,8 +45,11 @@
             this.grdBranchNames.Location = new System.Drawing.Point(30, 97);
             this.grdBranchNames.Name = "grdBranchNames";
             this.grdBranchNames.ReadOnly = true;
+            this.grdBranchNames.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdBranchNames.Size = new System.Drawing.Size(472, 252);
             this.grdBranchNames.TabIndex = 0;
+            this.grdBranchNames.KeyDown += new System.Windows.Forms.KeyEventHandler(this.grdBranchNames_KeyDown);
+            this.grdBranchNames.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.grdBranchNames_MouseDoubleClick);
             // 
             // label1
             // 
@@ -66,7 +69,7 @@
             // 
             // btn_addBranch
             // 
-            this.btn_addBranch.Location = new System.Drawing.Point(421, 64);
+            this.btn_addBranch.Location = new System.Drawing.Point(421, 60);
             this.btn_addBranch.Name = "btn_addBranch";
             this.btn_addBranch.Size = new System.Drawing.Size(75, 23);
             this.btn_addBranch.TabIndex = 3;

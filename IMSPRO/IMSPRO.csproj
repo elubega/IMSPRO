@@ -87,11 +87,23 @@
     <Compile Include="console.Designer.cs">
       <DependentUpon>console.cs</DependentUpon>
     </Compile>
+    <Compile Include="editBranch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="editBranch.Designer.cs">
+      <DependentUpon>editBranch.cs</DependentUpon>
+    </Compile>
     <Compile Include="editeUser.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="editeUser.Designer.cs">
       <DependentUpon>editeUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="editUnitMeasure.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="editUnitMeasure.Designer.cs">
+      <DependentUpon>editUnitMeasure.cs</DependentUpon>
     </Compile>
     <Compile Include="login.cs">
       <SubType>Form</SubType>
@@ -128,8 +140,14 @@
     <EmbeddedResource Include="console.resx">
       <DependentUpon>console.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="editBranch.resx">
+      <DependentUpon>editBranch.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="editeUser.resx">
       <DependentUpon>editeUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="editUnitMeasure.resx">
+      <DependentUpon>editUnitMeasure.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.cs</DependentUpon>

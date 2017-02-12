@@ -19,6 +19,9 @@ namespace IMSPRO
             InitializeComponent();
             lbl_login.Text = loginAs.ToUpper();
             userIDx = userID;
+            //maximize winow without covering taskbar
+            this.MaximizedBounds = Screen.FromHandle(this.Handle).WorkingArea;
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void console_FormClosing(object sender, FormClosingEventArgs e)
@@ -58,6 +61,24 @@ namespace IMSPRO
             branchManager brchWindow = new branchManager(userIDx);
             brchWindow.MdiParent = this;
             brchWindow.Show();
+        }
+
+        private void requestOrderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            orderRequest frmOrderRequest = new orderRequest();
+            frmOrderRequest.MdiParent = this;
+            frmOrderRequest.Show();
+        }
+
+        private void console_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode.ToString() == "A")
+            {
+               
+                orderRequest frmOrderRequest = new orderRequest();
+                frmOrderRequest.MdiParent = this;
+               frmOrderRequest.Show();
+            }
         }
     }
 }

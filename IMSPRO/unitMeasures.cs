@@ -60,20 +60,64 @@ namespace IMSPRO
         }
     
 
-        private void listUnitMeasures()
+        public void listUnitMeasures()
         {
             SetConnection();
             sql_con.Open();
-            sql_cmd = sql_con.CreateCommand();
-            string CommandText = "select unitName AS 'Unit Name' from unit_measure";
-            DB = new SQLiteDataAdapter(CommandText, sql_con);
-            DS.Reset();
-            DB.Fill(DS);
-            DT = DS.Tables[0];
-            grd_UnitMeasures.DataSource = DT;
+            string CommandText = "select unitID, unitName, dateAdded from unit_measure";
+            SQLiteDataAdapter showUnits = new SQLiteDataAdapter(CommandText, sql_con);
+                       
+            DataTable ds = new DataTable();
+            showUnits.Fill(ds);
+            grd_UnitMeasures.Rows.Clear();
+
+            grd_UnitMeasures.ColumnCount = 3;
+            grd_UnitMeasures.ColumnHeadersVisible = true;
+            grd_UnitMeasures.Columns[0].Name = "ID";
+            grd_UnitMeasures.Columns[1].Name = "Unit Name";
+            grd_UnitMeasures.Columns[2].Name = "Date Added";
+
+            foreach (DataRow item in ds.Rows)
+            {
+                grd_UnitMeasures.Columns[0].Visible = false;
+                int n = grd_UnitMeasures.Rows.Add();
+                grd_UnitMeasures.Rows[n].Cells[0].Value = item["unitID"].ToString();
+                grd_UnitMeasures.Rows[n].Cells[1].Value = item["unitName"].ToString();
+                grd_UnitMeasures.Rows[n].Cells[2].Value = Convert.ToDateTime(item["dateAdded"].ToString()).ToString("d");
+
+
+            }
             sql_con.Close(); ;
 
-            this.grd_UnitMeasures.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            this.grd_UnitMeasures.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
+
+        private void grd_UnitMeasures_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                SetConnection();
+                sql_con.Open();
+                string CommandText = "Delete from unit_measure where unitID = @ID";
+                SQLiteCommand comm = new SQLiteCommand(CommandText, sql_con);
+                comm.Parameters.AddWithValue("@ID", grd_UnitMeasures.SelectedRows[0].Cells[0].Value.ToString());
+                DialogResult result = MessageBox.Show("Do you really want to delete Unit Measure \"" + grd_UnitMeasures.SelectedRows[0].Cells[1].Value.ToString() + "\"?", "Confirm Branch deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    int qSuccess = comm.ExecuteNonQuery();
+                    MessageBox.Show("Unit has been Deleted Successfully", "Unit Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    listUnitMeasures();
+                }
+                sql_con.Close();
+            }
+        }
+
+        private void grd_UnitMeasures_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int unitID = Int32.Parse(grd_UnitMeasures.SelectedRows[0].Cells[0].Value.ToString());
+            editUnitMeasure frmEditMeasure = new editUnitMeasure(unitID, this);
+            frmEditMeasure.MdiParent = this.MdiParent;
+            frmEditMeasure.Show();
         }
     }
 }
