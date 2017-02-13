@@ -81,6 +81,7 @@
     <Compile Include="branchManager.Designer.cs">
       <DependentUpon>branchManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="connection.cs" />
     <Compile Include="console.cs">
       <SubType>Form</SubType>
     </Compile>
