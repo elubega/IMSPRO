@@ -17,17 +17,27 @@ namespace IMSPRO
         public orderRequest()
         {
             InitializeComponent();
+            AutoCompleteBarcode();
+            AutoCompleteProductName();
             OrderNumbers();
             LoadProductsInGrid();
             txt_dateOrdered.Text = DateTime.Now.ToString("dd-MM-yyyy");
             loadBranches();
             loadUsers();
             fillUnitsCbm();
-            fillUnitsCbm();
         }
 
         private void btn_addOrder_Click(object sender, EventArgs e)
         {
+            string barcode = txt_barCode.Text;
+            string productName = txt_productName.Text;
+            string qty = txt_qty.Text;
+            string unitMeasure = cbm_unitMeasure.SelectedText;
+            string[] row = { barcode, productName, qty, unitMeasure};
+            grdOrderForm.Rows.Add(row);
+
+            clearFormOrder();
+           
 
         }
 
@@ -102,6 +112,7 @@ namespace IMSPRO
 
         private void txt_barCode_KeyDown(object sender, KeyEventArgs e)
         {
+
             if(e.KeyCode==Keys.Enter)
             {
                 SQLiteConnection conn = new SQLiteConnection("Data Source=ismpro_db.sqlite;Version=3;New=False;Compress=True;");
@@ -115,7 +126,76 @@ namespace IMSPRO
                     txt_productName.Text = reader["productName"].ToString();
                 }
                 conn.Close();
+                txt_qty.Focus();
             }
         }
+        void AutoCompleteBarcode()
+        {
+            txt_barCode.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txt_barCode.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            AutoCompleteStringCollection coll = new AutoCompleteStringCollection();
+            SQLiteConnection conn = new SQLiteConnection("Data Source=ismpro_db.sqlite;Version=3;New=False;Compress=True;");
+            conn.Open();
+            string CommandText = "select productBarcode, productName from Products";
+            SQLiteCommand DB = new SQLiteCommand(CommandText, conn);
+            DB.Parameters.AddWithValue("@barcode", txt_barCode.Text);
+            SQLiteDataReader reader = DB.ExecuteReader();
+            while (reader.Read())
+            {
+                String barcode = reader["productBarcode"].ToString();
+                coll.Add(barcode);
+            }
+            conn.Close();
+
+            txt_barCode.AutoCompleteCustomSource = coll;
+        }
+        void AutoCompleteProductName()
+        {
+            txt_productName.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txt_productName.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            AutoCompleteStringCollection coll = new AutoCompleteStringCollection();
+            SQLiteConnection conn = new SQLiteConnection("Data Source=ismpro_db.sqlite;Version=3;New=False;Compress=True;");
+            conn.Open();
+            string CommandText = "select productBarcode, productName from Products";
+            SQLiteCommand DB = new SQLiteCommand(CommandText, conn);
+            SQLiteDataReader reader = DB.ExecuteReader();
+            while (reader.Read())
+            {
+                String barcode = reader["productName"].ToString();
+                coll.Add(barcode);
+            }
+            conn.Close();
+
+            txt_productName.AutoCompleteCustomSource = coll;
+        }
+        void clearFormOrder()
+        {
+            txt_qty.Clear();
+            txt_barCode.Clear();
+            txt_productName.Clear();
+            txt_barCode.Focus();
+        }
+
+        /// <summary>
+        /// Trying to Send Data from the Data Grid View to the Database
+        /// </summary>
+
+        private void btn_MakeOrder_Click(object sender, EventArgs e)
+        {
+            DataTable dt = new DataTable();
+            for (int j = 0; j < grdOrderForm.Rows.Count; j++)
+            {
+                DataRow dr;
+                DataGridViewRow row = grdOrderForm.Rows[j];
+                dr = dt.NewRow();
+                for (int i = 0; i < row.Cells.Count; i++)
+                {
+                    dr[i] = row.Cells[i];
+                }
+
+                dt.Rows.Add(dr);
+            }
+        }
+
     }
 }

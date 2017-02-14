@@ -49,6 +49,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.btn_MakeOrder = new System.Windows.Forms.Button();
+            this.btn_CancelOrder = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdOrderForm)).BeginInit();
             this.SuspendLayout();
@@ -66,6 +68,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btn_CancelOrder);
+            this.groupBox1.Controls.Add(this.btn_MakeOrder);
             this.groupBox1.Controls.Add(this.txt_orderNo);
             this.groupBox1.Controls.Add(this.txt_dateOrdered);
             this.groupBox1.Controls.Add(this.cbm_branchName);
@@ -109,7 +113,7 @@
             this.cbm_branchName.Location = new System.Drawing.Point(114, 165);
             this.cbm_branchName.Name = "cbm_branchName";
             this.cbm_branchName.Size = new System.Drawing.Size(152, 21);
-            this.cbm_branchName.TabIndex = 5;
+            this.cbm_branchName.TabIndex = 1;
             // 
             // cbm_orderedBy
             // 
@@ -117,7 +121,7 @@
             this.cbm_orderedBy.Location = new System.Drawing.Point(114, 197);
             this.cbm_orderedBy.Name = "cbm_orderedBy";
             this.cbm_orderedBy.Size = new System.Drawing.Size(152, 21);
-            this.cbm_orderedBy.TabIndex = 4;
+            this.cbm_orderedBy.TabIndex = 2;
             // 
             // label5
             // 
@@ -162,7 +166,6 @@
             this.grdOrderForm.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdOrderForm.Location = new System.Drawing.Point(328, 121);
             this.grdOrderForm.Name = "grdOrderForm";
-            this.grdOrderForm.ReadOnly = true;
             this.grdOrderForm.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdOrderForm.Size = new System.Drawing.Size(803, 344);
             this.grdOrderForm.TabIndex = 2;
@@ -243,6 +246,25 @@
             this.label9.TabIndex = 11;
             this.label9.Text = "Unit Measure";
             // 
+            // btn_MakeOrder
+            // 
+            this.btn_MakeOrder.Location = new System.Drawing.Point(167, 323);
+            this.btn_MakeOrder.Name = "btn_MakeOrder";
+            this.btn_MakeOrder.Size = new System.Drawing.Size(99, 48);
+            this.btn_MakeOrder.TabIndex = 8;
+            this.btn_MakeOrder.Text = "Make Order";
+            this.btn_MakeOrder.UseVisualStyleBackColor = true;
+            this.btn_MakeOrder.Click += new System.EventHandler(this.btn_MakeOrder_Click);
+            // 
+            // btn_CancelOrder
+            // 
+            this.btn_CancelOrder.Location = new System.Drawing.Point(71, 323);
+            this.btn_CancelOrder.Name = "btn_CancelOrder";
+            this.btn_CancelOrder.Size = new System.Drawing.Size(90, 48);
+            this.btn_CancelOrder.TabIndex = 9;
+            this.btn_CancelOrder.Text = "Cancel Order";
+            this.btn_CancelOrder.UseVisualStyleBackColor = true;
+            // 
             // orderRequest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -295,5 +317,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btn_CancelOrder;
+        private System.Windows.Forms.Button btn_MakeOrder;
     }
 }
