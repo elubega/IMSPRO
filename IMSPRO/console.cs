@@ -79,6 +79,23 @@ namespace IMSPRO
                 frmOrderRequest.MdiParent = this;
                frmOrderRequest.Show();
             }
+            if(e.KeyCode == Keys.F7)
+            {
+                openViewOrdersFrm();
+            }
+        }
+
+        private void viewOrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openViewOrdersFrm();
+        }
+
+        //Opens the View Orders Form
+        void openViewOrdersFrm()
+        {
+            viewOrders frmViewOrders = new viewOrders();
+            frmViewOrders.MdiParent = this;
+            frmViewOrders.Show();
         }
     }
 }

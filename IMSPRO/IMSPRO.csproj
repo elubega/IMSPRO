@@ -132,6 +132,18 @@
     <Compile Include="userManagement.Designer.cs">
       <DependentUpon>userManagement.cs</DependentUpon>
     </Compile>
+    <Compile Include="viewOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewOrders.Designer.cs">
+      <DependentUpon>viewOrders.cs</DependentUpon>
+    </Compile>
+    <Compile Include="workOnOrder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="workOnOrder.Designer.cs">
+      <DependentUpon>workOnOrder.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="addProducts.resx">
       <DependentUpon>addProducts.cs</DependentUpon>
     </EmbeddedResource>
@@ -171,6 +183,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="userManagement.resx">
       <DependentUpon>userManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="viewOrders.resx">
+      <DependentUpon>viewOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="workOnOrder.resx">
+      <DependentUpon>workOnOrder.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
