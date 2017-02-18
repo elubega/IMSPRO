@@ -228,7 +228,7 @@ namespace IMSPRO
                             StrQuery = @"INSERT INTO orders(barcode,productName,qty,measure,dateOrdered,orderNo,branchID,userID) VALUES (@barcode,@productName,@qty,@measure,@dateOrdered,@orderNo,@branch,@orderedBy)";
                     SQLiteCommand comm = new SQLiteCommand(StrQuery, conn);
                     comm.Parameters.AddWithValue("@barcode", grdOrderForm.Rows[i].Cells["Barcode"].Value);
-                    comm.Parameters.AddWithValue("@productName", grdOrderForm.Rows[i].Cells[2].Value);
+                    comm.Parameters.AddWithValue("@productName", grdOrderForm.Rows[i].Cells[1].Value);
                     comm.Parameters.AddWithValue("@qty", grdOrderForm.Rows[i].Cells["Qty"].Value);
                     comm.Parameters.AddWithValue("@measure", grdOrderForm.Rows[i].Cells["Measure"].Value);
                     comm.Parameters.AddWithValue("@dateOrdered", DateTime.Now.ToString("yyyy-MM-dd"));

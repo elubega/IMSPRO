@@ -93,7 +93,7 @@ namespace IMSPRO
         //Opens the View Orders Form
         void openViewOrdersFrm()
         {
-            viewOrders frmViewOrders = new viewOrders();
+            viewOrders frmViewOrders = new viewOrders(userIDx);
             frmViewOrders.MdiParent = this;
             frmViewOrders.Show();
         }
