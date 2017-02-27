@@ -49,22 +49,23 @@ namespace IMSPRO
             {
                 SQLiteConnection conn = new SQLiteConnection("Data Source=ismpro_db.sqlite;Version=3;New=False;Compress=True;");
 
-
                 conn.Open();
                 for (int i = 0; i < grdProcessOrder.Rows.Count; i++)
                 {
-                    /*StrQuery = @"INSERT INTO orders(barcode,productName,qty,measure,dateOrdered,orderNo,branchID,userID) VALUES (@barcode,@productName,@qty,@measure,@dateOrdered,@orderNo,@branch,@orderedBy)";
+                    StrQuery = @"INSERT INTO completedordersDetails(barcode,productName,qty,measure, price, orderNo) VALUES (@barcode,@productName,@qty,@measure, @price, @orderNo)";
                     SQLiteCommand comm = new SQLiteCommand(StrQuery, conn);
                     comm.Parameters.AddWithValue("@barcode", grdProcessOrder.Rows[i].Cells["Barcode"].Value);
-                    comm.Parameters.AddWithValue("@productName", grdProcessOrder.Rows[i].Cells[1].Value);
+                    comm.Parameters.AddWithValue("@productName", grdProcessOrder.Rows[i].Cells[2].Value);
                     comm.Parameters.AddWithValue("@qty", grdProcessOrder.Rows[i].Cells["Qty"].Value);
                     comm.Parameters.AddWithValue("@measure", grdProcessOrder.Rows[i].Cells["Measure"].Value);
-                    comm.Parameters.AddWithValue("@dateOrdered", DateTime.Now.ToString("yyyy-MM-dd"));
+                    comm.Parameters.AddWithValue("@price", grdProcessOrder.Rows[i].Cells["Price"].Value);
                     comm.Parameters.AddWithValue("@orderNo", txt_OrderNumber.Text);
-                    comm.Parameters.AddWithValue("@branch", txt_Branch.Text);
-                    comm.Parameters.AddWithValue("@orderedBy", txt_orderedBy.Text);
+                    //comm.Parameters.AddWithValue("@dateOrdered", DateTime.Now.ToString("yyyy-MM-dd"));
+                    //comm.Parameters.AddWithValue("@orderNo", txt_OrderNumber.Text);
+                    //comm.Parameters.AddWithValue("@branch", txt_Branch.Text);
+                    //comm.Parameters.AddWithValue("@orderedBy", txt_orderedBy.Text);
                     successEntryToDB = comm.ExecuteNonQuery();
-                    comm.Parameters.Clear();*/
+                    comm.Parameters.Clear();
 
                     //Update Table Products With a reduction in product qty
 
@@ -72,23 +73,32 @@ namespace IMSPRO
                     int yf =Int32.Parse(grdProcessOrder.Rows[i].Cells["Qty"].Value.ToString());
                     int orderNumber = Int32.Parse(txt_OrderNumber.Text.ToString());
 
-                    string query = "Select productQty from Products where productBarcode=@productBarcode";
+                    string query = "Select productQty, productName from Products where productBarcode=@productBarcode";
                     SQLiteCommand comm5 = new SQLiteCommand(query, conn);
                     comm5.Parameters.AddWithValue("@productBarcode", yb);
                     SQLiteDataReader reader = comm5.ExecuteReader();
                     while (reader.Read())
                     {
                         int qty = Int32.Parse(reader["productQty"].ToString());
+                        string productName = reader["productName"].ToString();
                         //Subtract old from new order qty
-                        finalQty=qty-yf;
+                        if (qty>yf)
+                        {
+                            finalQty = qty - yf;
+                        }
+                        else
+                        {
+                            MessageBox.Show(productName+ "is out of Stock, Remove it From List","Product out of Stock",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+                        }
+                        
                     }
                     
                     //update products table with new qty
-                        StrQuery = @"UPDATE Products SET productQty=@productQty where productBarcode=@barcode";
-                        SQLiteCommand comm = new SQLiteCommand(StrQuery, conn);
-                        comm.Parameters.AddWithValue("@barcode", grdProcessOrder.Rows[i].Cells["Barcode"].Value);
-                        comm.Parameters.AddWithValue("@productQty", finalQty);
-                    successEntryToDB = comm.ExecuteNonQuery();
+                    StrQuery = @"UPDATE Products SET productQty=@productQty where productBarcode=@barcode";
+                    SQLiteCommand commUpdateQty = new SQLiteCommand(StrQuery, conn);
+                    commUpdateQty.Parameters.AddWithValue("@barcode", grdProcessOrder.Rows[i].Cells["Barcode"].Value);
+                    commUpdateQty.Parameters.AddWithValue("@productQty", finalQty);
+                    successEntryToDB = commUpdateQty.ExecuteNonQuery();
 
                     //update orders table with the status
                     StrQuery = @"UPDATE orders SET processedOrderStatus = 1 where barcode=@barcode and orderNo=@orderNumber";
@@ -104,12 +114,14 @@ namespace IMSPRO
                 }
                 //insert order details into processed table for future reference
 
-                StrQuery = @"INSERT INTO completedOrders (orderNo, deliveredBy, processedBy, processedOn) VALUES(@orderNo,@deliveredBy,@processedBy,@processedOn)";
+                StrQuery = @"INSERT INTO completedOrders (orderNo, deliveredBy, processedBy, processedOn, customerName, customerPhone) VALUES(@orderNo,@deliveredBy,@processedBy,@processedOn,@customerNumber,@customerPhone)";
                 SQLiteCommand commCompleteOrder = new SQLiteCommand(StrQuery, conn);
                 commCompleteOrder.Parameters.AddWithValue("@orderNo", txt_OrderNumber.Text);
                 commCompleteOrder.Parameters.AddWithValue("@deliveredBy", cbm_deliveredBy.SelectedValue);
                 commCompleteOrder.Parameters.AddWithValue("@processedBy", currentLoggedInUser);
                 commCompleteOrder.Parameters.AddWithValue("@processedOn", DateTime.Now.ToString("yyyy-MM-dd"));
+                commCompleteOrder.Parameters.AddWithValue("@customerNumber", txt_customerName.Text);
+                commCompleteOrder.Parameters.AddWithValue("@customerPhone", txt_customerPhone.Text);
                 successEntryToDB = commCompleteOrder.ExecuteNonQuery();
 
                 if (successEntryToDB > 0)
@@ -147,12 +159,12 @@ namespace IMSPRO
             SetConnection();
             sql_con.Open();
             sql_cmd = sql_con.CreateCommand();
-            string CommandText = "select orders.orderID as orderID, orders.barcode as barcode, orders.productName, qty, orders.measure As 'MX', dateOrdered, orderNo, branch.branchName As branch, users.firstName As firstName, users.lastName As lastName from orders  left Join branch  ON branch.branchID=orders.branchID left Join users  ON users.userID = orders.userID left join products on orders.productName=Products.productID where orders.orderNo='" + txt_OrderNumber.Text.ToString()+"'";
+            string CommandText = @"select A.orderID as orderID,A.barcode as barcode,A.productName as productName, A.qty as qty,A.measure as measure,A.orderNo as orderNo,A.price as price, B.CustomerName as CustomerName, B.CustomerPhone as CustomerPhone, B.DateOrdered as dateOrdered,C.branchName as branch, D.firstName as firstName, D.lastName as lastName from orders A left join orderCustomers B on B.orderNo = A.orderNo left join branch C on C.branchID = B.BranchID left join users D on D.userID= B.OrderedBy where A.orderNo='" + txt_OrderNumber.Text.ToString()+"'";
             SQLiteDataAdapter pdtList = new SQLiteDataAdapter(CommandText, sql_con);
             DataTable ds = new DataTable();
             pdtList.Fill(ds);
             grdProcessOrder.Rows.Clear();
-            grdProcessOrder.ColumnCount = 5;
+            grdProcessOrder.ColumnCount = 7;
             grdProcessOrder.ColumnHeadersVisible = true;
 
             grdProcessOrder.Columns[0].Name = "ID";
@@ -160,6 +172,8 @@ namespace IMSPRO
             grdProcessOrder.Columns[2].Name = "Product Name";
             grdProcessOrder.Columns[3].Name = "Qty";
             grdProcessOrder.Columns[4].Name = "Measure";
+            grdProcessOrder.Columns[5].Name = "Price";
+            grdProcessOrder.Columns[6].Name = "Total";
             foreach (DataRow item in ds.Rows)
             {
                 grdProcessOrder.Columns[0].Visible = false;
@@ -168,14 +182,39 @@ namespace IMSPRO
                 grdProcessOrder.Rows[n].Cells[1].Value = item["barcode"].ToString();
                 grdProcessOrder.Rows[n].Cells[2].Value = item["productName"].ToString();
                 grdProcessOrder.Rows[n].Cells[3].Value = item["qty"].ToString();
-                grdProcessOrder.Rows[n].Cells[4].Value = item["MX"].ToString();
+                grdProcessOrder.Rows[n].Cells[4].Value = item["measure"].ToString();
+                grdProcessOrder.Rows[n].Cells[5].Value = item["price"].ToString();
+                int qty = Int32.Parse(item["qty"].ToString());
+                int price = Int32.Parse(item["price"].ToString());
+                int total = qty * price;
+                grdProcessOrder.Rows[n].Cells[6].Value = total;
                 txt_dateOrdered.Text = Convert.ToDateTime(item["dateOrdered"].ToString()).ToString("d");
                 string name = item["firstName"].ToString() + " " + item["lastName"].ToString();
                 txt_orderedBy.Text = name;
                 txt_Branch.Text = item["branch"].ToString();
+                txt_customerName.Text = item["CustomerName"].ToString();
+                txt_customerPhone.Text = item["CustomerPhone"].ToString();
+
             }
             this.grdProcessOrder.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            GroundTotal();
+
+
+
             sql_con.Close();
+
+        }
+        private void GroundTotal()
+        {
+            int GTotal=0;
+            for (int i = 0; i < grdProcessOrder.Rows.Count; i++)
+            {
+                 string total = (grdProcessOrder.Rows[i].Cells[6].Value.ToString());
+                GTotal += Int32.Parse(total);
+                //totalZ = total;
+            }
+            txt_FinalTotal.Text = GTotal.ToString();
         }
         private void loadUsers()
         {

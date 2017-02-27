@@ -55,7 +55,7 @@
             this.allOrders.Location = new System.Drawing.Point(23, 28);
             this.allOrders.Name = "allOrders";
             this.allOrders.SelectedIndex = 0;
-            this.allOrders.Size = new System.Drawing.Size(954, 477);
+            this.allOrders.Size = new System.Drawing.Size(1426, 477);
             this.allOrders.TabIndex = 0;
             this.allOrders.SelectedIndexChanged += new System.EventHandler(this.allOrders_SelectedIndexChanged);
             // 
@@ -66,7 +66,7 @@
             this.pendingOrders.Location = new System.Drawing.Point(4, 25);
             this.pendingOrders.Name = "pendingOrders";
             this.pendingOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.pendingOrders.Size = new System.Drawing.Size(946, 448);
+            this.pendingOrders.Size = new System.Drawing.Size(1418, 448);
             this.pendingOrders.TabIndex = 0;
             this.pendingOrders.Text = "Pending Orders";
             this.pendingOrders.UseVisualStyleBackColor = true;
@@ -80,14 +80,14 @@
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(28, 26);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(900, 404);
+            this.groupBox1.Size = new System.Drawing.Size(1384, 404);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Pending Orders";
             // 
             // btn_refresh
             // 
-            this.btn_refresh.Location = new System.Drawing.Point(795, 24);
+            this.btn_refresh.Location = new System.Drawing.Point(1279, 24);
             this.btn_refresh.Name = "btn_refresh";
             this.btn_refresh.Size = new System.Drawing.Size(99, 35);
             this.btn_refresh.TabIndex = 3;
@@ -97,7 +97,7 @@
             // 
             // txt_searchOrder
             // 
-            this.txt_searchOrder.Location = new System.Drawing.Point(349, 25);
+            this.txt_searchOrder.Location = new System.Drawing.Point(830, 25);
             this.txt_searchOrder.Multiline = true;
             this.txt_searchOrder.Name = "txt_searchOrder";
             this.txt_searchOrder.Size = new System.Drawing.Size(320, 33);
@@ -106,7 +106,7 @@
             // 
             // btn_searchOrders
             // 
-            this.btn_searchOrders.Location = new System.Drawing.Point(675, 24);
+            this.btn_searchOrders.Location = new System.Drawing.Point(1156, 24);
             this.btn_searchOrders.Name = "btn_searchOrders";
             this.btn_searchOrders.Size = new System.Drawing.Size(113, 35);
             this.btn_searchOrders.TabIndex = 1;
@@ -124,7 +124,7 @@
             this.grdPendingOrders.ReadOnly = true;
             this.grdPendingOrders.RowTemplate.Height = 24;
             this.grdPendingOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdPendingOrders.Size = new System.Drawing.Size(887, 325);
+            this.grdPendingOrders.Size = new System.Drawing.Size(1371, 325);
             this.grdPendingOrders.TabIndex = 0;
             this.grdPendingOrders.DoubleClick += new System.EventHandler(this.grdPendingOrders_DoubleClick);
             // 
@@ -134,7 +134,7 @@
             this.completedOrders.Location = new System.Drawing.Point(4, 25);
             this.completedOrders.Name = "completedOrders";
             this.completedOrders.Padding = new System.Windows.Forms.Padding(3);
-            this.completedOrders.Size = new System.Drawing.Size(946, 448);
+            this.completedOrders.Size = new System.Drawing.Size(1418, 448);
             this.completedOrders.TabIndex = 1;
             this.completedOrders.Text = "Completed Orders";
             this.completedOrders.UseVisualStyleBackColor = true;
@@ -144,7 +144,7 @@
             this.groupBox2.Controls.Add(this.grdCompletedOrders);
             this.groupBox2.Location = new System.Drawing.Point(16, 22);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(912, 404);
+            this.groupBox2.Size = new System.Drawing.Size(1396, 404);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Completed Orders";
@@ -158,20 +158,22 @@
             this.grdCompletedOrders.Name = "grdCompletedOrders";
             this.grdCompletedOrders.ReadOnly = true;
             this.grdCompletedOrders.RowTemplate.Height = 24;
-            this.grdCompletedOrders.Size = new System.Drawing.Size(876, 353);
+            this.grdCompletedOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.grdCompletedOrders.Size = new System.Drawing.Size(1373, 353);
             this.grdCompletedOrders.TabIndex = 0;
             // 
             // viewOrders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(999, 517);
+            this.ClientSize = new System.Drawing.Size(1461, 517);
             this.Controls.Add(this.allOrders);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "viewOrders";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "View All Orders";
+            this.Load += new System.EventHandler(this.viewOrders_Load);
             this.allOrders.ResumeLayout(false);
             this.pendingOrders.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);

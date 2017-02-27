@@ -20,6 +20,7 @@ namespace IMSPRO
             fillCombUnitMeasures();
             loginNames = userID;
             LoadData();
+            btn_edit.Enabled = false;
         }
         //decearing variables for the connection
         private SQLiteConnection sql_con;
@@ -39,6 +40,7 @@ namespace IMSPRO
             sql_cmd.CommandText = txtQuery;
             sql_cmd.ExecuteNonQuery();
             sql_con.Close();
+            
         }
 
         //creating connection string
@@ -59,30 +61,42 @@ namespace IMSPRO
             { 
             SetConnection();
             sql_con.Open();
-            string query = "INSERT INTO Products (productBarcode, productName, productQty, unitID, userID,  dateStocked)";
-            query += " VALUES (@productBarcode, @productName, @productQty, @unitID, @userID, @dateStocked)";
-
-            SQLiteCommand myCommand = new SQLiteCommand(query, sql_con);
-            myCommand.Parameters.AddWithValue("@productBarcode", txt_barcode.Text);
-            myCommand.Parameters.AddWithValue("@productName", txt_productName.Text);
-            myCommand.Parameters.AddWithValue("@productQty", txt_qty.Text);
-            myCommand.Parameters.AddWithValue("@unitID", cbm_units.SelectedValue);
-            myCommand.Parameters.AddWithValue("@userID", loginNames);
-            myCommand.Parameters.AddWithValue("@dateStocked", DateTime.Now.ToString("yyyy-MM-dd"));
-            // ... other parameters
-            int qSuccess = myCommand.ExecuteNonQuery();
-            sql_con.Close();
-            if(qSuccess==1)
+                string CommandText = "select productBarcode, productName, unitID from Products where productBarcode=@barcode";
+                SQLiteCommand DB = new SQLiteCommand(CommandText, sql_con);
+                DB.Parameters.AddWithValue("@barcode", txt_barcode.Text);
+                int confirmAction = DB.ExecuteNonQuery();
+                if (confirmAction==1)
+                {
+                    updateProduct();
+                }
+                else
+                {
+                    insertProductsIntoDb();
+                }
+          }
+        }
+       
+        void productIfAlreadyExists()
+        {
+            SQLiteConnection conn = new SQLiteConnection("Data Source=ismpro_db.sqlite;Version=3;New=False;Compress=True;");
+            conn.Open();
+            string CommandText = "select productBarcode, productName, unitID from Products where productBarcode=@barcode";
+            SQLiteCommand DB = new SQLiteCommand(CommandText, conn);
+            DB.Parameters.AddWithValue("@barcode", txt_barcode.Text);
+            SQLiteDataReader reader = DB.ExecuteReader();
+            if (reader.HasRows)
             {
-                LoadData();
-                clearEntryForm();
-
+                while (reader.Read())
+                    {
+                            txt_productName.Text = reader["productName"].ToString();
+                    }
+                txt_carton.Focus();
             }
             else
             {
-                MessageBox.Show("There is an Error","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                txt_productName.Focus();
             }
-          }
+            
         }
         private void LoadData()
         {
@@ -90,11 +104,25 @@ namespace IMSPRO
             SetConnection();
             sql_con.Open();
             sql_cmd = sql_con.CreateCommand();
-            string CommandText = "select productID, productBarcode, productName, productQty, unit_measure.unitName As 'unitName' , users.userName AS 'userName', dateStocked from Products  left Join unit_measure  ON unit_measure.unitID=Products.unitID left Join users  ON users.userID = Products.userID";
+            string CommandText = "select productID, productBarcode, productName, productQty, unit_measure.unitName As 'unitName' , users.userName AS 'userName', dateStocked,Products.carton as carton, Products.unitCost as unitCost, Products.totalQty as totalQty from Products  left Join unit_measure  ON unit_measure.unitID=Products.unitID left Join users  ON users.userID = Products.userID";
             SQLiteDataAdapter pdtList= new SQLiteDataAdapter(CommandText, sql_con);
             DataTable ds = new DataTable();
             pdtList.Fill(ds);
             lstProducts.Rows.Clear();
+            lstProducts.ColumnCount = 10;
+            lstProducts.ColumnHeadersVisible = true;
+
+            lstProducts.Columns[0].Name = "ID";
+            lstProducts.Columns[1].Name = "Barcode";
+            lstProducts.Columns[2].Name = "Product Name";
+            lstProducts.Columns[3].Name = "Qty";
+            lstProducts.Columns[4].Name = "Carton";
+            lstProducts.Columns[5].Name = "Unit Cost";
+            lstProducts.Columns[6].Name = "Measure";
+            lstProducts.Columns[7].Name = "Total Qty";
+            lstProducts.Columns[8].Name = "Date Recorded";
+            lstProducts.Columns[9].Name = "Recorded By";
+
             foreach (DataRow item in ds.Rows)
             {
                 lstProducts.Columns[0].Visible = false;
@@ -103,18 +131,19 @@ namespace IMSPRO
                 lstProducts.Rows[n].Cells[1].Value = item["productBarcode"].ToString();
                 lstProducts.Rows[n].Cells[2].Value = item["productName"].ToString();
                 lstProducts.Rows[n].Cells[3].Value = item["productQty"].ToString();
-                lstProducts.Rows[n].Cells[4].Value = item["unitName"].ToString();
-                lstProducts.Rows[n].Cells[5].Value = item["userName"].ToString();
-                lstProducts.Rows[n].Cells[6].Value = Convert.ToDateTime(item["dateStocked"].ToString()).ToString("d");
-
-
+                lstProducts.Rows[n].Cells[4].Value = item["carton"].ToString();
+                lstProducts.Rows[n].Cells[5].Value = item["unitCost"].ToString();
+                lstProducts.Rows[n].Cells[6].Value = item["unitName"].ToString();
+                lstProducts.Rows[n].Cells[7].Value = item["totalQty"].ToString();
+                lstProducts.Rows[n].Cells[8].Value = Convert.ToDateTime(item["dateStocked"].ToString()).ToString("d");
+                lstProducts.Rows[n].Cells[9].Value = item["userName"].ToString();
             }
             //DT = DS.Tables[0];
             //lstProducts.DataSource = DT;
             sql_con.Close();
 
             //Autosizes the product name column
-            //this.lstProducts.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            this.lstProducts.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             
         }
         private void fillCombUnitMeasures()
@@ -146,40 +175,12 @@ namespace IMSPRO
             txt_productName.Clear();
             txt_qty.Clear();
             cbm_units.SelectedIndex = -1;
+            txt_unitCost.Clear();
+            txt_carton.Clear();
             txt_barcode.Focus();
+            btn_add.Enabled = true;
+            btn_edit.Enabled = false;
         }
-
-        //Was for a button click to delete we changed to delete key pree
-        /*private void btn_delete_Click(object sender, EventArgs e)
-        {
-            SetConnection();
-            sql_con.Open();
-            string query = "Delete from Products where productID = @productID";
-            SQLiteCommand comm = new SQLiteCommand(query, sql_con);
-            comm.Parameters.AddWithValue("@productID", txt_ProductId.Text);
-            if (String.IsNullOrWhiteSpace(txt_productName.Text))
-            {
-                MessageBox.Show("Please select a Product to Delete", "No Item Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                clearEntryForm();
-            } else
-            { 
-            //Warm user before deleting item from the product list
-            DialogResult result = MessageBox.Show("Do you really want to delete the product \"" + txt_productName.Text + "\"?", "Confirm product deletion", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
-            {
-
-                int qSuccess = comm.ExecuteNonQuery();
-                MessageBox.Show("Product Deleted", "Product Deleted",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                    LoadData();
-                    clearEntryForm();
-            }
-            if(result==DialogResult.No)
-                {
-                    clearEntryForm();
-                }
-        }
-            sql_con.Close();
-        }*/
 
         private void btn_clearForm_Click(object sender, EventArgs e)
         {
@@ -192,7 +193,9 @@ namespace IMSPRO
             txt_barcode.Text = lstProducts.SelectedRows[0].Cells[1].Value.ToString();
             txt_productName.Text = lstProducts.SelectedRows[0].Cells[2].Value.ToString();
             txt_qty.Text = lstProducts.SelectedRows[0].Cells[3].Value.ToString();
-            String d = lstProducts.SelectedRows[0].Cells[4].Value.ToString();
+            txt_carton.Text = lstProducts.SelectedRows[0].Cells[4].Value.ToString();
+            txt_unitCost.Text = lstProducts.SelectedRows[0].Cells[5].Value.ToString();
+            String d = lstProducts.SelectedRows[0].Cells[6].Value.ToString();
 
             SQLiteConnection sql_con = new SQLiteConnection
                 ("Data Source=ismpro_db.sqlite;Version=3;New=False;Compress=True;");
@@ -205,23 +208,70 @@ namespace IMSPRO
                 cbm_units.SelectedValue = item["unitID"].ToString();
 
             }
+            btn_add.Enabled = false;
+            btn_edit.Enabled = true;
         }
 
         private void btn_edit_Click(object sender, EventArgs e)
         {
+            updateProduct();
+        }
+        void insertProductsIntoDb()
+        {
             SetConnection();
             sql_con.Open();
-            String query = "UPDATE Products SET productBarcode=@barcode, productName=@productName, productQty=@qty, unitID=@unitID where productID=@pID";
-            SQLiteCommand comm = new SQLiteCommand(query,sql_con);
-            comm.Parameters.AddWithValue("@barcode", txt_barcode.Text);
-            comm.Parameters.AddWithValue("@productName",txt_productName.Text);
-            comm.Parameters.AddWithValue("@qty",txt_qty.Text);
-            comm.Parameters.AddWithValue("@unitID", cbm_units.SelectedValue);
-            comm.Parameters.AddWithValue("@pID",txt_ProductId.Text);
-            int confirmAction = comm.ExecuteNonQuery();
-            if (confirmAction==1)
+            string query = "INSERT INTO Products (productBarcode, productName, productQty, unitID, userID,  dateStocked, carton,unitCost,totalQty)";
+            query += " VALUES (@productBarcode, @productName, @productQty, @unitID, @userID, @dateStocked,@carton,@unitCost,@totalQty)";
+
+            SQLiteCommand myCommand = new SQLiteCommand(query, sql_con);
+            myCommand.Parameters.AddWithValue("@productBarcode", txt_barcode.Text);
+            myCommand.Parameters.AddWithValue("@productName", txt_productName.Text);
+            myCommand.Parameters.AddWithValue("@productQty", txt_qty.Text);
+            myCommand.Parameters.AddWithValue("@unitID", cbm_units.SelectedValue);
+            myCommand.Parameters.AddWithValue("@userID", loginNames);
+            myCommand.Parameters.AddWithValue("@dateStocked", DateTime.Now.ToString("yyyy-MM-dd"));
+            myCommand.Parameters.AddWithValue("@carton", txt_carton.Text);
+            myCommand.Parameters.AddWithValue("@unitCost", txt_unitCost.Text);
+            int qtyEntered = Int32.Parse(txt_qty.Text);
+            int qtyCartons = Int32.Parse(txt_carton.Text);
+            int finalTotal = qtyEntered * qtyCartons;
+            //myCommand.Parameters.AddWithValue("@totalQty", txt_qty.Text);
+            myCommand.Parameters.AddWithValue("@totalQty", finalTotal);
+            // ... other parameters
+            int qSuccess = myCommand.ExecuteNonQuery();
+            sql_con.Close();
+            if (qSuccess == 1)
             {
-                MessageBox.Show("Product has been updated successfully ","Product Updated", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                LoadData();
+                clearEntryForm();
+
+            }
+            else
+            {
+                MessageBox.Show("There is an Error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        void updateProduct()
+        {
+            SetConnection();
+            sql_con.Open();
+            String query = "UPDATE Products SET productBarcode=@barcode, productName=@productName, productQty=@qty, unitID=@unitID, carton=@carton, unitCost=@unitCost, totalQty=@totalQty where productID=@pID";
+            SQLiteCommand comm = new SQLiteCommand(query, sql_con);
+            comm.Parameters.AddWithValue("@barcode", txt_barcode.Text);
+            comm.Parameters.AddWithValue("@productName", txt_productName.Text);
+            comm.Parameters.AddWithValue("@qty", txt_qty.Text);
+            comm.Parameters.AddWithValue("@unitID", cbm_units.SelectedValue);
+            comm.Parameters.AddWithValue("@pID", txt_ProductId.Text);
+            comm.Parameters.AddWithValue("@carton", txt_ProductId.Text);
+            comm.Parameters.AddWithValue("@unitCost", txt_ProductId.Text);
+            int cartonSize = Int32.Parse(txt_carton.Text);
+            int qtyPerCarton = Int32.Parse(txt_qty.Text);
+            int finalTotal = cartonSize * qtyPerCarton;
+            comm.Parameters.AddWithValue("@totalQty", finalTotal);
+            int confirmAction = comm.ExecuteNonQuery();
+            if (confirmAction == 1)
+            {
+                MessageBox.Show("Product has been updated successfully ", "Product Updated", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadData();
                 clearEntryForm();
             }
@@ -230,7 +280,7 @@ namespace IMSPRO
                 MessageBox.Show("Something Happened, Close and Try Again.. Sorry", "Ooops, Sorry", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 clearEntryForm();
             }
-
+            btn_add.Enabled = true;
         }
 
         private void lstProducts_KeyDown(object sender, KeyEventArgs e)
@@ -261,6 +311,14 @@ namespace IMSPRO
                     }
                 
                 sql_con.Close();
+            }
+        }
+
+        private void txt_barcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode==Keys.Enter)
+            {
+                productIfAlreadyExists();
             }
         }
     }

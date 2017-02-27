@@ -97,5 +97,12 @@ namespace IMSPRO
             frmViewOrders.MdiParent = this;
             frmViewOrders.Show();
         }
+
+        private void ordersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ViewReport frmViewReport = new ViewReport();
+            frmViewReport.MdiParent = this;
+            frmViewReport.Show();
+        }
     }
 }

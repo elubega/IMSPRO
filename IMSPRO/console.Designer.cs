@@ -39,12 +39,13 @@
             this.newProductToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.orderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.requestOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu_unitMeasures = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu_users = new System.Windows.Forms.ToolStripMenuItem();
             this.branchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ordersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -125,8 +126,19 @@
             this.requestOrderToolStripMenuItem.Text = "Request Order ";
             this.requestOrderToolStripMenuItem.Click += new System.EventHandler(this.requestOrderToolStripMenuItem_Click);
             // 
+            // viewOrdersToolStripMenuItem
+            // 
+            this.viewOrdersToolStripMenuItem.Name = "viewOrdersToolStripMenuItem";
+            this.viewOrdersToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
+            this.viewOrdersToolStripMenuItem.Size = new System.Drawing.Size(234, 26);
+            this.viewOrdersToolStripMenuItem.Text = "View Orders";
+            this.viewOrdersToolStripMenuItem.ToolTipText = "View All Orders";
+            this.viewOrdersToolStripMenuItem.Click += new System.EventHandler(this.viewOrdersToolStripMenuItem_Click);
+            // 
             // reportsToolStripMenuItem
             // 
+            this.reportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ordersToolStripMenuItem});
             this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
             this.reportsToolStripMenuItem.Size = new System.Drawing.Size(72, 24);
             this.reportsToolStripMenuItem.Text = "Reports";
@@ -162,14 +174,12 @@
             this.branchToolStripMenuItem.Text = "&Branch";
             this.branchToolStripMenuItem.Click += new System.EventHandler(this.branchToolStripMenuItem_Click);
             // 
-            // viewOrdersToolStripMenuItem
+            // ordersToolStripMenuItem
             // 
-            this.viewOrdersToolStripMenuItem.Name = "viewOrdersToolStripMenuItem";
-            this.viewOrdersToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F7;
-            this.viewOrdersToolStripMenuItem.Size = new System.Drawing.Size(234, 26);
-            this.viewOrdersToolStripMenuItem.Text = "View Orders";
-            this.viewOrdersToolStripMenuItem.ToolTipText = "View All Orders";
-            this.viewOrdersToolStripMenuItem.Click += new System.EventHandler(this.viewOrdersToolStripMenuItem_Click);
+            this.ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
+            this.ordersToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.ordersToolStripMenuItem.Text = "Orders";
+            this.ordersToolStripMenuItem.Click += new System.EventHandler(this.ordersToolStripMenuItem_Click);
             // 
             // console
             // 
@@ -184,7 +194,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "console";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -216,6 +226,7 @@
         private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem requestOrderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewOrdersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ordersToolStripMenuItem;
     }
 }
 
