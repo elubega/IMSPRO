@@ -178,6 +178,12 @@
     <Compile Include="viewOrders.Designer.cs">
       <DependentUpon>viewOrders.cs</DependentUpon>
     </Compile>
+    <Compile Include="viewProcessedOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="viewProcessedOrders.Designer.cs">
+      <DependentUpon>viewProcessedOrders.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewReport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="viewOrders.resx">
       <DependentUpon>viewOrders.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="viewProcessedOrders.resx">
+      <DependentUpon>viewProcessedOrders.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ViewReport.resx">
       <DependentUpon>ViewReport.cs</DependentUpon>

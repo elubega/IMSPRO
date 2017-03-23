@@ -161,6 +161,7 @@
             this.grdCompletedOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdCompletedOrders.Size = new System.Drawing.Size(1373, 353);
             this.grdCompletedOrders.TabIndex = 0;
+            this.grdCompletedOrders.DoubleClick += new System.EventHandler(this.grdCompletedOrders_DoubleClick);
             // 
             // viewOrders
             // 

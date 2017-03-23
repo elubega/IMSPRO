@@ -270,5 +270,13 @@ namespace IMSPRO
         {
 
         }
+
+        private void grdCompletedOrders_DoubleClick(object sender, EventArgs e)
+        {
+            string orderID = grdCompletedOrders.SelectedRows[0].Cells[1].Value.ToString();
+            viewProcessedOrders workOrdersFrm = new viewProcessedOrders(orderID, this, loggedUsername);
+            workOrdersFrm.MdiParent = this.MdiParent;
+            workOrdersFrm.Show();
+        }
     }
 }
