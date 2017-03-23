@@ -144,6 +144,7 @@
       <DependentUpon>orderRequest.cs</DependentUpon>
     </Compile>
     <Compile Include="OrdersReport.cs" />
+    <Compile Include="printingOrders.cs" />
     <Compile Include="productsList.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -249,6 +250,7 @@
       <DependentUpon>workOnOrder.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\OrdersReport.datasource" />
     <None Include="Properties\DataSources\reportOrderInfo.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

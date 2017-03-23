@@ -20,7 +20,7 @@ namespace IMSPRO
             userIDLog = userID;
             loadBranchName();
         }
-         
+
         //decearing variables for the connection
         private SQLiteConnection sql_con;
         private SQLiteCommand sql_cmd;
@@ -38,75 +38,76 @@ namespace IMSPRO
         {
             try
             {
-                
-                    if (string.IsNullOrWhiteSpace(txt_branchName.Text))
-                    {
-                        MessageBox.Show("Ooops you didn't anything.... Look at you", "Empty Form Field", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    }
-                    else
-                    {
-                        SetConnection();
-                        sql_con.Open();
-                        string query = "INSERT INTO branch (branchName, dateAdded, addedBy)";
-                        query += " VALUES (@branchName, @dateAdded, @addedBy)";
 
-                        SQLiteCommand myCommand = new SQLiteCommand(query, sql_con);
-                        myCommand.Parameters.AddWithValue("@branchName", txt_branchName.Text);
-                        myCommand.Parameters.AddWithValue("@dateAdded", DateTime.Now.ToString("yyyy-MM-dd"));
-                        myCommand.Parameters.AddWithValue("@addedBy", userIDLog);
-                        // ... other parameters
-                        int qSuccess = myCommand.ExecuteNonQuery();
-                        sql_con.Close();
-                        if (qSuccess == 1)
-                        {
+                if (string.IsNullOrWhiteSpace(txt_branchName.Text))
+                {
+                    MessageBox.Show("Ooops you didn't anything.... Look at you", "Empty Form Field", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+                else
+                {
+                    SetConnection();
+                    sql_con.Open();
+                    string query = "INSERT INTO branch (branchName, dateAdded, addedBy)";
+                    query += " VALUES (@branchName, @dateAdded, @addedBy)";
 
-                            txt_branchName.Clear();
-                            txt_branchName.Focus();
-                            //Loads Branch Names
-                            loadBranchName();
-                        }
+                    SQLiteCommand myCommand = new SQLiteCommand(query, sql_con);
+                    myCommand.Parameters.AddWithValue("@branchName", txt_branchName.Text);
+                    myCommand.Parameters.AddWithValue("@dateAdded", DateTime.Now.ToString("yyyy-MM-dd"));
+                    myCommand.Parameters.AddWithValue("@addedBy", userIDLog);
+                    // ... other parameters
+                    int qSuccess = myCommand.ExecuteNonQuery();
+                    sql_con.Close();
+                    if (qSuccess == 1)
+                    {
+
+                        txt_branchName.Clear();
+                        txt_branchName.Focus();
+                        //Loads Branch Names
+                        loadBranchName();
                     }
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("There is an Error .. "+ ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("There is an Error .. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         public void loadBranchName()
         {
             try
-            { 
-            
-                    SetConnection();
-                    sql_con.Open();
-                    sql_cmd = sql_con.CreateCommand();
-                    string CommandText = "select branch.branchID AS 'branchID', branch.branchName AS 'BranchName', branch.dateAdded DateAdded, users.userName AddedBy from branch LEFT JOIN users on users.userID = branch.addedBy";
-                    SQLiteDataAdapter cmdBranch = new SQLiteDataAdapter(CommandText, sql_con);
-                    DataTable brachDataTable = new DataTable();
-                    cmdBranch.Fill(brachDataTable);
-                    grdBranchNames.Rows.Clear();
-                    grdBranchNames.ColumnCount = 4;
-                    grdBranchNames.ColumnHeadersVisible = true;
+            {
 
-                    grdBranchNames.Columns[0].Name = "Brach ID";
-                    grdBranchNames.Columns[1].Name = "Branch Name";
-                    grdBranchNames.Columns[2].Name = "Date Added";
-                    grdBranchNames.Columns[3].Name = "Added By";
+                SetConnection();
+                sql_con.Open();
+                sql_cmd = sql_con.CreateCommand();
+                string CommandText = "select branch.branchID AS 'branchID', branch.branchName AS 'BranchName', branch.dateAdded DateAdded, users.userName AddedBy from branch LEFT JOIN users on users.userID = branch.addedBy";
+                SQLiteDataAdapter cmdBranch = new SQLiteDataAdapter(CommandText, sql_con);
+                DataTable brachDataTable = new DataTable();
+                cmdBranch.Fill(brachDataTable);
+                grdBranchNames.Rows.Clear();
+                grdBranchNames.ColumnCount = 4;
+                grdBranchNames.ColumnHeadersVisible = true;
 
-                    grdBranchNames.Columns[0].Visible = false;
-                    foreach (DataRow item in brachDataTable.Rows)
-                    {
+                grdBranchNames.Columns[0].Name = "Brach ID";
+                grdBranchNames.Columns[1].Name = "Branch Name";
+                grdBranchNames.Columns[2].Name = "Date Added";
+                grdBranchNames.Columns[3].Name = "Added By";
 
-                        int n = grdBranchNames.Rows.Add();
-                        grdBranchNames.Rows[n].Cells[0].Value = item["branchID"].ToString();
-                        grdBranchNames.Rows[n].Cells[1].Value = item["BranchName"].ToString();
-                        grdBranchNames.Rows[n].Cells[2].Value = item["AddedBy"].ToString();
-                        grdBranchNames.Rows[n].Cells[3].Value = Convert.ToDateTime(item["DateAdded"].ToString()).ToString("d");
-                    }
-                    this.grdBranchNames.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    sql_con.Close();
-                
-            }catch(Exception ex)
+                grdBranchNames.Columns[0].Visible = false;
+                foreach (DataRow item in brachDataTable.Rows)
+                {
+
+                    int n = grdBranchNames.Rows.Add();
+                    grdBranchNames.Rows[n].Cells[0].Value = item["branchID"].ToString();
+                    grdBranchNames.Rows[n].Cells[1].Value = item["BranchName"].ToString();
+                    grdBranchNames.Rows[n].Cells[2].Value = item["AddedBy"].ToString();
+                    grdBranchNames.Rows[n].Cells[3].Value = Convert.ToDateTime(item["DateAdded"].ToString()).ToString("d");
+                }
+                this.grdBranchNames.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                sql_con.Close();
+
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("There is an Error .. " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

@@ -49,9 +49,9 @@ namespace IMSPRO
             sql_cmd = sql_con.CreateCommand();
             /*string CommandText = @"select DISTINCT orderID, dateOrdered, orderNo, branch.branchName As branch, users.firstName As firstName, users.lastName As lastName from orders"+
                $"left Join branch  ON branch.branchID=orders.branchID left Join users  ON users.userID = orders.userID  where orders.processedOrderStatus = 0 group by orders.orderNo order by dateOrdered ASC";*/
-            string CommandText = @"select C.orderCustomerID AS orderID, C.orderNo AS orderNo, A.branchName AS branch,C.CustomerName AS CustomerName," +
+            string CommandText = @"select DISTINCT C.orderCustomerID AS orderID, C.orderNo AS orderNo, A.branchName AS branch,C.CustomerName AS CustomerName," +
                                  "C.CustomerPhone AS CustomerPhone,C.DateOrdered AS dateOrdered,B.firstName AS firstName, B.lastName AS lastName " +  
-                                 $"from orderCustomers C left join branch A on A.branchID=C.BranchID left join users B on B.userID=C.OrderedBy";
+                                 $"from orderCustomers C left join branch A on A.branchID=C.BranchID left join users B on B.userID=C.OrderedBy left join orders D on D.orderNo=C.orderNo where D.processedOrderStatus=0 order by C.DateOrdered DESC";
             SQLiteDataAdapter pdtList = new SQLiteDataAdapter(CommandText, sql_con);
             DataTable ds = new DataTable();
             pdtList.Fill(ds);
@@ -198,12 +198,14 @@ namespace IMSPRO
             sql_cmd = sql_con.CreateCommand();
             //string CommandText = "select DISTINCT orderID, dateOrdered, orders.orderNo as orderNo, branch.branchName As branch, users.firstName As firstName, users.lastName As lastName,users.firstName as deliveredBy, users.firstName as processedBy from orders left Join branch ON branch.branchID = orders.branchID left Join users ON users.userID = orders.userID  left Join completedOrders on completedOrders.processedBy = orders.userID and completedOrders.deliveredBy = orders.userID where orders.processedOrderStatus = 1 group by orders.orderNo order by dateOrdered ASC";
             string CommandText = @"Select DISTINCT A.completedOrdersID AS completedOrdersID, A.orderNo AS orderNo, A.deliveredBy AS 
-                                deliveredBy, A.processedBy As processedBy, A.processedOn AS processedOn, A.CustomerName AS 
-                                CustomerName, A.customerPhone AS customerPhone, C.firstName AS firstName, C.lastName As 
-                                lastName, F.firstName AS DeliveredfirstName, F.lastName As DeliveredlastName, F.firstName AS ProcessedfirstName, F.lastName As ProcessedlastName, D.customerName As CustomerName, D.customerPhone AS CustomerPhone, E.branchName as branch, D.DateOrdered AS dateOrdered
-                                from completedOrders A left join branch B on B.branchID=B.BranchID left join 
-                                users C on C.userID=A.processedBy left join orderCustomers D on D.orderNo=A.orderNo 
-                                left join branch E on E.branchID=D.BranchID left join users F on F.userID=A.deliveredBy left join users G on G.userID=A.processedBy";
+                                    deliveredBy, A.processedBy As processedBy, A.processedOn AS processedOn, A.CustomerName AS 
+                                    CustomerName, A.customerPhone AS customerPhone, C.firstName AS firstName, C.lastName As 
+                                    lastName, F.firstName AS DeliveredfirstName, F.lastName As DeliveredlastName, F.firstName AS ProcessedfirstName, 
+                                    F.lastName As ProcessedlastName, D.customerName As CustomerName, D.customerPhone AS CustomerPhone, E.branchName as branch, 
+                                    D.DateOrdered AS dateOrdered from completedOrders A left join branch B on B.branchID=B.BranchID left join 
+                                    users C on C.userID=A.processedBy left join orderCustomers D on D.orderNo=A.orderNo 
+                                    left join branch E on E.branchID=D.BranchID left join users F on F.userID=A.deliveredBy 
+                                    left join users G on G.userID=A.processedBy order by D.DateOrdered DESC";
             SQLiteDataAdapter pdtList = new SQLiteDataAdapter(CommandText, sql_con);
             DataTable ds = new DataTable();
             pdtList.Fill(ds);
